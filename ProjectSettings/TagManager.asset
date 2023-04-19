@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PotionHealth
   - Spike
+  - PotionSpeed
   layers:
   - Default
   - TransparentFX
