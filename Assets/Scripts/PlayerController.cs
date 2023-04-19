@@ -79,6 +79,11 @@ public class PlayerController : MonoBehaviour
             speed = 8f;
             collision.gameObject.SetActive(false);
         }
+
+        if (collision.tag == "HeartItem") {
+            AddHealth();
+            collision.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
