@@ -66,6 +66,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "PotionHealth") {
+            Heal(1.0f);
+            collision.gameObject.SetActive(false);
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.tag == "Spike")
@@ -87,6 +95,11 @@ public class PlayerController : MonoBehaviour
     public void AddHealth()
     {
         PlayerStats.Instance.AddHealth();
+    }
+
+    public void Heal(float health)
+    {
+        PlayerStats.Instance.Heal(health);
     }
 
 }
