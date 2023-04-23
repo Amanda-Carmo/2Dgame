@@ -20,14 +20,19 @@ public class PlayerController : MonoBehaviour
     public float damageCooldown = 1f;
     private float lastDamageTime;
     private bool isDead = false;
-    
 
-    //public HealthBar healthBar;
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
+    public int attackDamage = 40;
 
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
+
+        //attackArea = transform.GetChild(0).gameObject;
     }
     
 
@@ -67,6 +72,13 @@ public class PlayerController : MonoBehaviour
             canTakeDamage = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Attack();
+        }
+
+        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -95,7 +107,7 @@ public class PlayerController : MonoBehaviour
             {
                 playerAnimation.SetTrigger("Death");
                 isDead = true;
-                StartCoroutine(DisablePlayerController());
+                GetComponent<PlayerController>().enabled = false;
             }
             else if (canTakeDamage && isDead == false)
             {
@@ -104,12 +116,6 @@ public class PlayerController : MonoBehaviour
                 canTakeDamage = false;
             }
         }
-    }
-
-    IEnumerator DisablePlayerController()
-    {
-        yield return new WaitForSeconds(0.5f); // adicione um pequeno atraso aqui
-        GetComponent<PlayerController>().enabled = false;
     }
 
     public void Hurt(float dmg)
@@ -125,6 +131,24 @@ public class PlayerController : MonoBehaviour
     public void Heal(float health)
     {
         PlayerStats.Instance.Heal(health);
+    }
+
+    private void Attack()
+    {
+        playerAnimation.SetTrigger("attack");
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null) 
+            return;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
 }
