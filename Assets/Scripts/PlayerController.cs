@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool canTakeDamage = true;
     public float damageCooldown = 1f;
     private float lastDamageTime;
+    private bool isDead = false;
     
 
     //public HealthBar healthBar;
@@ -59,13 +60,13 @@ public class PlayerController : MonoBehaviour
 
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
         playerAnimation.SetBool("OnGround", isTouchingGround);
+        playerAnimation.SetBool("canTakeDamage", canTakeDamage);
 
         if (!canTakeDamage && Time.time - lastDamageTime > damageCooldown)
         {
             canTakeDamage = true;
         }
 
-        Debug.Log(speed);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -90,13 +91,25 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.tag == "Spike")
         {
-            if (canTakeDamage)
+            if (PlayerStats.Instance.Health <= 0 && isDead == false) 
+            {
+                playerAnimation.SetTrigger("Death");
+                isDead = true;
+                StartCoroutine(DisablePlayerController());
+            }
+            else if (canTakeDamage && isDead == false)
             {
                 Hurt(0.25f);
                 lastDamageTime = Time.time;
                 canTakeDamage = false;
             }
         }
+    }
+
+    IEnumerator DisablePlayerController()
+    {
+        yield return new WaitForSeconds(0.5f); // adicione um pequeno atraso aqui
+        GetComponent<PlayerController>().enabled = false;
     }
 
     public void Hurt(float dmg)
