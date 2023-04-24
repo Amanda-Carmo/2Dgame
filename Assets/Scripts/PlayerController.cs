@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     private Animator playerAnimation;
 
-    private bool canTakeDamage = true;
+    public bool canTakeDamage = true;
     public float damageCooldown = 1f;
     private float lastDamageTime;
     private bool isDead = false;
@@ -67,6 +67,11 @@ public class PlayerController : MonoBehaviour
         playerAnimation.SetBool("OnGround", isTouchingGround);
         playerAnimation.SetBool("canTakeDamage", canTakeDamage);
 
+        if (PlayerStats.Instance.Health <= 0 && isDead == false) 
+        {
+            Dead();
+        }
+
         if (!canTakeDamage && Time.time - lastDamageTime > damageCooldown)
         {
             canTakeDamage = true;
@@ -76,8 +81,6 @@ public class PlayerController : MonoBehaviour
         {
             Attack();
         }
-
-        
 
     }
 
@@ -103,24 +106,28 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.tag == "Spike")
         {
-            if (PlayerStats.Instance.Health <= 0 && isDead == false) 
-            {
-                playerAnimation.SetTrigger("Death");
-                isDead = true;
-                GetComponent<PlayerController>().enabled = false;
-            }
-            else if (canTakeDamage && isDead == false)
+            if (canTakeDamage && isDead == false)
             {
                 Hurt(0.25f);
-                lastDamageTime = Time.time;
-                canTakeDamage = false;
             }
         }
     }
 
+    public void Dead() 
+    {
+        playerAnimation.SetTrigger("Death");
+        isDead = true;
+        GetComponent<PlayerController>().enabled = false;
+        GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
+        GetComponent<Rigidbody2D>().simulated = false; // Desativa a simulação do componente Rigidbody2D
+        this.enabled = false;
+    }
+
     public void Hurt(float dmg)
     {
+        canTakeDamage = false;
         PlayerStats.Instance.TakeDamage(dmg);
+        lastDamageTime = Time.time;
     }
 
     public void AddHealth()
