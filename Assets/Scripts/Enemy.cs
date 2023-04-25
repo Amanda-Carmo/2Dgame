@@ -75,9 +75,13 @@ public class Enemy : MonoBehaviour
 
         enemyAnimation.SetTrigger("Attack");
 
-        if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && playerController.canTakeDamage)
+        if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && playerController.canTakeDamage && !playerController.hasDefense)
         {
-            playerController.Hurt(damage);
+            playerController.Hurt(playerController.damageTaken);
+        }
+        else if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && playerController.canTakeDamage && playerController.hasDefense)
+        {
+            playerController.Hurt(playerController.damageTaken - playerController.defense);
         }
 
         isAttacking = false;
