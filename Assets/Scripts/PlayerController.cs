@@ -86,11 +86,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PotionHealth") {
-            Heal(1.0f);
-            collision.gameObject.SetActive(false);
-        }
-
         if (collision.tag == "PotionSpeed") {
             speed = 8f;
             collision.gameObject.SetActive(false);
