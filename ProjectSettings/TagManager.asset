@@ -45,3 +45,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Sky
+    uniqueID: 2863760857
+    locked: 0
+  - name: BackForest
+    uniqueID: 3545757829
+    locked: 0
+  - name: Terrain
+    uniqueID: 4245662647
+    locked: 0
