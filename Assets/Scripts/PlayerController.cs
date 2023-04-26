@@ -24,15 +24,19 @@ public class PlayerController : MonoBehaviour
     private bool isDead = false;
     public float damageTaken = 0.5f;
 
-    // variaveis de ataque
+    // variaveis de ataque e poção
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
-    public int attackDamage = 40;
+    public int attackDamage = 20;
 
     // variaveis de poção de defesa
     public bool hasDefense = false;
-    public float defense = 0.25f;
+    public float defense = 0.25f; // 0.5 - 0.25
+
+    // variaveis de poção de força
+    public bool hasStrength = false;
+    public int strength = 20; // 20 + 20
 
     void Start()
     {
@@ -107,6 +111,11 @@ public class PlayerController : MonoBehaviour
             hasDefense = true;
             collision.gameObject.SetActive(false);
         }
+
+        if (collision.tag == "PotionStrength") {
+            hasStrength = true;
+            collision.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -157,9 +166,19 @@ public class PlayerController : MonoBehaviour
         playerAnimation.SetTrigger("attack");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        foreach(Collider2D enemy in hitEnemies)
+        if (!hasStrength)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            }
+        }
+        else if (hasStrength)
+        {
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+            }
         }
     }
 
