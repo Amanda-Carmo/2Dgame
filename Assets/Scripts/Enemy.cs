@@ -98,6 +98,13 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Explosion") {
+            TakeDamage(25);
+        }
+    }
 
     void Die() 
     {
