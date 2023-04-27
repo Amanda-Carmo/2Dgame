@@ -56,13 +56,13 @@ public class PlayerController : MonoBehaviour
         if (direction > 0f)
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
-            transform.localScale = new Vector2(6.5544f, 6.5544f);
+            transform.localScale = new Vector2(10.5544f, 10.5544f);
         }
 
         else if (direction < 0f)
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
-            transform.localScale = new Vector2(-6.5544f, 6.5544f);
+            transform.localScale = new Vector2(-10.5544f, 10.5544f);
         }
 
         else
