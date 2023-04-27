@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // variaveis do player
     public float speed = 5f;
     public float jumpSpeed = 6f;
     private float direction = 0f;
     private Rigidbody2D player;
 
+    // variáveis de Jump 
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayer;
@@ -16,16 +18,26 @@ public class PlayerController : MonoBehaviour
 
     private Animator playerAnimation;
 
+    // variaveis de dano e morte
     public bool canTakeDamage = true;
     public float damageCooldown = 1f;
     private float lastDamageTime;
     private bool isDead = false;
+    public float damageTaken = 0.5f;
 
+    // variaveis de ataque e poção
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
+    public int attackDamage = 20;
 
-    public int attackDamage = 40;
+    // variaveis de poção de defesa
+    public bool hasDefense = false;
+    public float defense = 0.25f; // 0.5 - 0.25
+
+    // variaveis de poção de força
+    public bool hasStrength = false;
+    public int strength = 20; // 20 + 20
 
     void Start()
     {
@@ -86,11 +98,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PotionHealth") {
-            Heal(1.0f);
-            collision.gameObject.SetActive(false);
-        }
-
         if (collision.tag == "PotionSpeed") {
             speed = 8f;
             collision.gameObject.SetActive(false);
@@ -100,15 +107,30 @@ public class PlayerController : MonoBehaviour
             AddHealth();
             collision.gameObject.SetActive(false);
         }
+
+        if (collision.tag == "PotionDefense") {
+            hasDefense = true;
+            collision.gameObject.SetActive(false);
+        }
+
+        if (collision.tag == "PotionStrength") {
+            hasStrength = true;
+            collision.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.tag == "Spike")
         {
-            if (canTakeDamage && isDead == false)
+            if (canTakeDamage && isDead == false && !hasDefense)
             {
-                Hurt(0.25f);
+                Hurt(damageTaken);
+            }
+
+            else if (canTakeDamage && isDead == false && hasDefense)
+            {
+                Hurt(damageTaken - defense);
             }
         }
     }
@@ -145,9 +167,19 @@ public class PlayerController : MonoBehaviour
         playerAnimation.SetTrigger("attack");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        foreach(Collider2D enemy in hitEnemies)
+        if (!hasStrength)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            }
+        }
+        else if (hasStrength)
+        {
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+            }
         }
     }
 

@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour
 
     private PlayerController playerController;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -75,9 +74,14 @@ public class Enemy : MonoBehaviour
 
         enemyAnimation.SetTrigger("Attack");
 
-        if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && playerController.canTakeDamage)
+        // dano ataque corpo a corpo com player
+        if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && playerController.canTakeDamage && !playerController.hasDefense)
         {
-            playerController.Hurt(damage);
+            playerController.Hurt(playerController.damageTaken);
+        }
+        else if (Vector2.Distance(transform.position, playerTransform.position) <= attackRange && playerController.canTakeDamage && playerController.hasDefense)
+        {
+            playerController.Hurt(playerController.damageTaken - playerController.defense);
         }
 
         isAttacking = false;
@@ -92,6 +96,13 @@ public class Enemy : MonoBehaviour
 
         if(currentHealth <=0) {
             Die();
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Explosion") {
+            TakeDamage(25);
         }
     }
 

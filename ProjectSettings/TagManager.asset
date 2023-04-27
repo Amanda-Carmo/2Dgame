@@ -8,6 +8,10 @@ TagManager:
   - Spike
   - PotionSpeed
   - HeartItem
+  - PotionDefense
+  - PotionStrength
+  - Bomb
+  - Explosion
   layers:
   - Default
   - TransparentFX
