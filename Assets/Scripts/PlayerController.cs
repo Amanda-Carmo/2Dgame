@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
+         GetComponent<Rigidbody2D>().freezeRotation = true;
 
         //attackArea = transform.GetChild(0).gameObject;
     }
@@ -99,7 +100,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "PotionSpeed") {
-            speed = 8f;
+            speed = 18f;
             collision.gameObject.SetActive(false);
         }
 

@@ -53,12 +53,12 @@ public class Enemy : MonoBehaviour
             if (playerTransform.position.x > transform.position.x)
             {
                 // o playerTransform está à direita
-                transform.localScale = new Vector3(3f, 2.5f, 1f); // flip horizontal
+                transform.localScale = new Vector3(8f, 8f, 1f); // flip horizontal
             }
             else
             {
                 // o playerTransform está à esquerda
-                transform.localScale = new Vector3(-3f, 2.5f, 1f); // flip horizontal
+                transform.localScale = new Vector3(-8f, 8f, 1f); // flip horizontal
             }
         }
 
