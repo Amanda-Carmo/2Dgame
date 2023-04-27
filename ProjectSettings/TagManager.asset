@@ -51,6 +51,9 @@ TagManager:
   - name: BackForest
     uniqueID: 3545757829
     locked: 0
+  - name: MiddleForest
+    uniqueID: 2508273997
+    locked: 0
   - name: Terrain
     uniqueID: 4245662647
     locked: 0
