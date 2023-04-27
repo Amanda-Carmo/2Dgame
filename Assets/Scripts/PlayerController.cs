@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Timers;
+using System.Threading.Tasks;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,6 +41,9 @@ public class PlayerController : MonoBehaviour
     // variaveis de poção de força
     public bool hasStrength = false;
     public int strength = 20; // 20 + 20
+
+    // variavel de pocao de invencibilidade
+    public bool hasInvencibility = false;
 
     void Start()
     {
@@ -93,6 +99,13 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             Attack();
+
+        }
+        if (hasInvencibility)
+        {
+            Task.Delay(5000).ContinueWith(_ => {
+                hasInvencibility = false;
+            });
         }
 
     }
@@ -148,9 +161,12 @@ public class PlayerController : MonoBehaviour
 
     public void Hurt(float dmg)
     {
-        canTakeDamage = false;
-        PlayerStats.Instance.TakeDamage(dmg);
-        lastDamageTime = Time.time;
+        if (!hasInvencibility)
+        {
+            canTakeDamage = false;
+            PlayerStats.Instance.TakeDamage(dmg);
+            lastDamageTime = Time.time;
+        }
     }
 
     public void AddHealth()

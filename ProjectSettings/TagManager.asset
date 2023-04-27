@@ -12,6 +12,7 @@ TagManager:
   - PotionStrength
   - Bomb
   - Explosion
+  - PotionInvencible
   layers:
   - Default
   - TransparentFX
