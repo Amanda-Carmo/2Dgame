@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Timers;
-using System.Threading.Tasks;
-
 
 public class PlayerController : MonoBehaviour
 {
@@ -45,6 +43,12 @@ public class PlayerController : MonoBehaviour
     // variavel de pocao de invencibilidade
     public bool hasInvencibility = false;
 
+    // audio
+    [SerializeField] private AudioSource attackSoundEffect;
+    [SerializeField] private AudioSource takeHitSoundEffect;
+    [SerializeField] private AudioSource jumpSoundEffect;
+    //[SerializeField] private AudioSource walkSoundEffect;
+
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
@@ -64,12 +68,14 @@ public class PlayerController : MonoBehaviour
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
             transform.localScale = new Vector2(10.5544f, 10.5544f);
+            //walkSoundEffect.Play();
         }
 
         else if (direction < 0f)
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
             transform.localScale = new Vector2(-10.5544f, 10.5544f);
+            //walkSoundEffect.Play();
         }
 
         else
@@ -80,6 +86,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+            jumpSoundEffect.Play();
         }
 
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
@@ -99,14 +106,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             Attack();
-
         }
+
         if (hasInvencibility)
         {
-            Task.Delay(5000).ContinueWith(_ => {
+            Timer timer = new Timer(5000);
+            timer.AutoReset = false;
+            timer.Elapsed += (sender, e) => {
                 hasInvencibility = false;
-            });
+                timer.Dispose();
+            };
+            timer.Start();
         }
+
+        Debug.Log(hasInvencibility);
 
     }
 
@@ -166,6 +179,7 @@ public class PlayerController : MonoBehaviour
             canTakeDamage = false;
             PlayerStats.Instance.TakeDamage(dmg);
             lastDamageTime = Time.time;
+            takeHitSoundEffect.Play();
         }
     }
 
@@ -183,6 +197,7 @@ public class PlayerController : MonoBehaviour
     {
         playerAnimation.SetTrigger("attack");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        attackSoundEffect.Play();
 
         if (!hasStrength)
         {
