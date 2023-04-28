@@ -71,7 +71,6 @@ public class Enemy : MonoBehaviour
 
         // atualizar a posição
         transform.position = newPosition;
-        Debug.Log(speed);
         
     }
 
