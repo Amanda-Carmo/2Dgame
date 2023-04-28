@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Timers;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
-    public int attackDamage = 20;
+    public int attackDamage = 40;
 
     // variaveis de poção de defesa
     public bool hasDefense = false;
@@ -39,12 +40,27 @@ public class PlayerController : MonoBehaviour
     public bool hasStrength = false;
     public int strength = 20; // 20 + 20
 
+    // variavel de pocao de invencibilidade
+    public bool hasInvencibility = false;
+
+    // variavel de fire sword
+    public bool hasFireSword = false;
+    public GameObject fireHead; 
+    public GameObject fireEnemy; 
+
+
+    // audio
+    [SerializeField] private AudioSource attackSoundEffect;
+    [SerializeField] private AudioSource takeHitSoundEffect;
+    [SerializeField] private AudioSource jumpSoundEffect;
+    //[SerializeField] private AudioSource walkSoundEffect;
+
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
-         GetComponent<Rigidbody2D>().freezeRotation = true;
-
+        GetComponent<Rigidbody2D>().freezeRotation = true;
+        fireHead.SetActive(false);
         //attackArea = transform.GetChild(0).gameObject;
     }
     
@@ -58,12 +74,14 @@ public class PlayerController : MonoBehaviour
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
             transform.localScale = new Vector2(10.5544f, 10.5544f);
+            //walkSoundEffect.Play();
         }
 
         else if (direction < 0f)
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
             transform.localScale = new Vector2(-10.5544f, 10.5544f);
+            //walkSoundEffect.Play();
         }
 
         else
@@ -74,6 +92,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+            jumpSoundEffect.Play();
         }
 
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
@@ -95,6 +114,16 @@ public class PlayerController : MonoBehaviour
             Attack();
         }
 
+        if (hasInvencibility)
+        {
+            Timer timer = new Timer(5000);
+            timer.AutoReset = false;
+            timer.Elapsed += (sender, e) => {
+                hasInvencibility = false;
+                timer.Dispose();
+            };
+            timer.Start();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -116,6 +145,12 @@ public class PlayerController : MonoBehaviour
 
         if (collision.tag == "PotionStrength") {
             hasStrength = true;
+            collision.gameObject.SetActive(false);
+        }
+
+        if (collision.tag == "fireSword") {
+            hasFireSword = true;
+            fireHead.SetActive(true);
             collision.gameObject.SetActive(false);
         }
     }
@@ -148,9 +183,13 @@ public class PlayerController : MonoBehaviour
 
     public void Hurt(float dmg)
     {
-        canTakeDamage = false;
-        PlayerStats.Instance.TakeDamage(dmg);
-        lastDamageTime = Time.time;
+        if (!hasInvencibility)
+        {
+            canTakeDamage = false;
+            PlayerStats.Instance.TakeDamage(dmg);
+            lastDamageTime = Time.time;
+            takeHitSoundEffect.Play();
+        }
     }
 
     public void AddHealth()
@@ -167,15 +206,46 @@ public class PlayerController : MonoBehaviour
     {
         playerAnimation.SetTrigger("attack");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+        attackSoundEffect.Play();
 
-        if (!hasStrength)
+        // Enemy enemyScript = enemy.GetComponent<Enemy>();
+        // enemyScript.TakeDamage(attackDamage);
+
+        // nao tem poção de força nem espada de fogo
+        if (!hasStrength && !hasFireSword)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
             }
         }
-        else if (hasStrength)
+
+        // tem poção de força mas nao tem espada de fogo
+        else if (hasStrength && !hasFireSword)
+        {
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+            }
+        }
+
+        // nao tem poção de força mas tem espada de fogo
+        else if (!hasStrength && hasFireSword)
+        {
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+
+                if(enemy.GetComponent<Enemy>() != null)
+                {
+                    enemy.GetComponent<Enemy>().ApplyBurn(4);
+                }
+
+            }
+        }
+
+        // tem poção de força e tem espada de fogo
+        else if (hasStrength && hasFireSword)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
