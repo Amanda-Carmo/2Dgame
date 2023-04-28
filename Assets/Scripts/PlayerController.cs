@@ -52,7 +52,10 @@ public class PlayerController : MonoBehaviour
     public bool hasIceSword = false;
     public GameObject iceHead; 
     public GameObject iceEnemy; 
-    
+
+    // variavel de ice sword
+    public bool hasLightning = false;
+    public GameObject lightingEnemy; 
 
 
     // audio
@@ -61,6 +64,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource jumpSoundEffect;
     //[SerializeField] private AudioSource walkSoundEffect;
 
+    private Enemy enemy;
+
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
@@ -68,7 +73,7 @@ public class PlayerController : MonoBehaviour
         GetComponent<Rigidbody2D>().freezeRotation = true;
         fireHead.SetActive(false);
         iceHead.SetActive(false);
-        //attackArea = transform.GetChild(0).gameObject;
+        enemy = FindObjectOfType<Enemy>();
     }
     
 
@@ -265,7 +270,6 @@ public class PlayerController : MonoBehaviour
                 {
                     enemy.GetComponent<Enemy>().ApplyFreeze(6);
                 }
-
             }
         }
     }

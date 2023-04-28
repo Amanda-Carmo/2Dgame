@@ -19,11 +19,13 @@ public class Enemy : MonoBehaviour
 
     private PlayerController playerController;
 
-    // Burn and Freeze
+    // Burn, Freeze and Lightning
     public List<int> burnTickTimes = new List<int>();
     public List<int> freezeTickTimes = new List<int>();
+    public List<int> lightiningTickTimes = new List<int>();
     public GameObject fireHead; 
-    public GameObject iceHead; 
+    public GameObject iceHead;
+    public GameObject lightningHead; 
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class Enemy : MonoBehaviour
         playerController = FindObjectOfType<PlayerController>();
         fireHead.SetActive(false);
         iceHead.SetActive(false);
+        lightningHead.SetActive(false);
     }
 
     void Update()
@@ -168,6 +171,37 @@ public class Enemy : MonoBehaviour
         {
             iceHead.SetActive(false);
             speed = 10;
+        }
+    }
+
+    public void ApplyLightning(int ticks)
+    {
+        if (lightiningTickTimes.Count <= 0)
+        {
+            lightiningTickTimes.Add(ticks);
+            StartCoroutine(Lightining());
+        }
+        else
+        {
+            lightiningTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Lightining()
+    {
+        while(lightiningTickTimes.Count > 0)
+        {
+            for(int i = 0; i < lightiningTickTimes.Count; i++)
+            {
+                lightiningTickTimes[i]--;
+            }
+            lightningHead.SetActive(true);
+            lightiningTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (lightiningTickTimes.Count <= 0)
+        {
+            lightningHead.SetActive(false);
         }
     }
     
