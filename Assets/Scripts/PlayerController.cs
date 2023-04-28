@@ -48,6 +48,11 @@ public class PlayerController : MonoBehaviour
     public GameObject fireHead; 
     public GameObject fireEnemy; 
 
+    // variavel de ice sword
+    public bool hasIceSword = false;
+    public GameObject iceHead; 
+    public GameObject iceEnemy; 
+
 
     // audio
     [SerializeField] private AudioSource attackSoundEffect;
@@ -151,6 +156,11 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "fireSword") {
             hasFireSword = true;
             fireHead.SetActive(true);
+            collision.gameObject.SetActive(false);
+        }
+        if (collision.tag == "iceSword") {
+            hasIceSword = true;
+            iceHead.SetActive(true);
             collision.gameObject.SetActive(false);
         }
     }
