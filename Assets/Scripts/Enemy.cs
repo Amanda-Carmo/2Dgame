@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     bool isAttacking = false;
     public float attackBufferDistance = 0.25f; // distância de buffer de ataque
 
+    public List<int> burnTickTimes = new List<int>();
 
     public Animator enemyAnimation;
 
@@ -19,6 +20,7 @@ public class Enemy : MonoBehaviour
     int currentHealth;
 
     private PlayerController playerController;
+    public GameObject fireHead; 
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,7 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().freezeRotation = true;
         playerController = FindObjectOfType<PlayerController>();
+        fireHead.SetActive(false);
     }
 
     void Update()
@@ -53,12 +56,12 @@ public class Enemy : MonoBehaviour
             if (playerTransform.position.x > transform.position.x)
             {
                 // o playerTransform está à direita
-                transform.localScale = new Vector3(3f, 2.5f, 1f); // flip horizontal
+                transform.localScale = new Vector3(8f, 8f, 1f); // flip horizontal
             }
             else
             {
                 // o playerTransform está à esquerda
-                transform.localScale = new Vector3(-3f, 2.5f, 1f); // flip horizontal
+                transform.localScale = new Vector3(-8f, 8f, 1f); // flip horizontal
             }
         }
 
@@ -96,6 +99,38 @@ public class Enemy : MonoBehaviour
 
         if(currentHealth <=0) {
             Die();
+        }
+    }
+
+    public void ApplyBurn(int ticks)
+    {
+        if (burnTickTimes.Count <= 0)
+        {
+            burnTickTimes.Add(ticks);
+            StartCoroutine(Burn());
+        }
+        else
+        {
+            burnTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Burn()
+    {
+        while(burnTickTimes.Count > 0)
+        {
+            for(int i = 0; i < burnTickTimes.Count; i++)
+            {
+                burnTickTimes[i]--;
+            }
+            TakeDamage(5);
+            fireHead.SetActive(true);
+            burnTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (burnTickTimes.Count <= 0)
+        {
+            fireHead.SetActive(false);
         }
     }
     
