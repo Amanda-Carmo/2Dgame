@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     bool isAttacking = false;
     public float attackBufferDistance = 0.25f; // distância de buffer de ataque
 
+    public List<int> burnTickTimes = new List<int>();
 
     public Animator enemyAnimation;
 
@@ -96,6 +97,33 @@ public class Enemy : MonoBehaviour
 
         if(currentHealth <=0) {
             Die();
+        }
+    }
+
+    public void ApplyBurn(int ticks)
+    {
+        if (burnTickTimes.Count <= 0)
+        {
+            burnTickTimes.Add(ticks);
+            StartCoroutine(Burn());
+        }
+        else
+        {
+            burnTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Burn()
+    {
+        while(burnTickTimes.Count > 0)
+        {
+            for(int i = 0; i < burnTickTimes.Count; i++)
+            {
+                burnTickTimes[i]--;
+            }
+            TakeDamage(10);
+            burnTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
         }
     }
     

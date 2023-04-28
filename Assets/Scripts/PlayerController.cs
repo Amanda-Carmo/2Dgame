@@ -43,6 +43,10 @@ public class PlayerController : MonoBehaviour
     // variavel de pocao de invencibilidade
     public bool hasInvencibility = false;
 
+    // variavel de fire sword
+    public bool hasFireSword = false;
+
+
     // audio
     [SerializeField] private AudioSource attackSoundEffect;
     [SerializeField] private AudioSource takeHitSoundEffect;
@@ -144,6 +148,11 @@ public class PlayerController : MonoBehaviour
             hasStrength = true;
             collision.gameObject.SetActive(false);
         }
+
+        if (collision.tag == "fireSword") {
+            hasFireSword = true;
+            collision.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -199,14 +208,44 @@ public class PlayerController : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         attackSoundEffect.Play();
 
-        if (!hasStrength)
+        // Enemy enemyScript = enemy.GetComponent<Enemy>();
+        // enemyScript.TakeDamage(attackDamage);
+
+        // nao tem poção de força nem espada de fogo
+        if (!hasStrength && !hasFireSword)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
             }
         }
-        else if (hasStrength)
+
+        // tem poção de força mas nao tem espada de fogo
+        else if (hasStrength && !hasFireSword)
+        {
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+            }
+        }
+
+        // nao tem poção de força mas tem espada de fogo
+        else if (!hasStrength && hasFireSword)
+        {
+            foreach(Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+
+                if(enemy.GetComponent<Enemy>() != null)
+                {
+                    enemy.GetComponent<Enemy>().ApplyBurn(4);
+                }
+
+            }
+        }
+
+        // tem poção de força e tem espada de fogo
+        else if (hasStrength && hasFireSword)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
