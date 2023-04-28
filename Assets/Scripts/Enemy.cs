@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 0.2f;
+    public float speed;
     public Transform playerTransform;
     private float distance;
     public float attackRange = 1.5f;
@@ -12,15 +12,18 @@ public class Enemy : MonoBehaviour
     bool isAttacking = false;
     public float attackBufferDistance = 0.25f; // distância de buffer de ataque
 
-    public List<int> burnTickTimes = new List<int>();
-
     public Animator enemyAnimation;
 
     public int maxHealth = 100;
     int currentHealth;
 
     private PlayerController playerController;
+
+    // Burn and Freeze
+    public List<int> burnTickTimes = new List<int>();
+    public List<int> freezeTickTimes = new List<int>();
     public GameObject fireHead; 
+    public GameObject iceHead; 
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +32,7 @@ public class Enemy : MonoBehaviour
         GetComponent<Rigidbody2D>().freezeRotation = true;
         playerController = FindObjectOfType<PlayerController>();
         fireHead.SetActive(false);
+        iceHead.SetActive(false);
     }
 
     void Update()
@@ -67,6 +71,7 @@ public class Enemy : MonoBehaviour
 
         // atualizar a posição
         transform.position = newPosition;
+        Debug.Log(speed);
         
     }
 
@@ -131,6 +136,39 @@ public class Enemy : MonoBehaviour
         if (burnTickTimes.Count <= 0)
         {
             fireHead.SetActive(false);
+        }
+    }
+
+    public void ApplyFreeze(int ticks)
+    {
+        if (freezeTickTimes.Count <= 0)
+        {
+            freezeTickTimes.Add(ticks);
+            StartCoroutine(Freeze());
+        }
+        else
+        {
+            freezeTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Freeze()
+    {
+        while(freezeTickTimes.Count > 0)
+        {
+            for(int i = 0; i < freezeTickTimes.Count; i++)
+            {
+                freezeTickTimes[i]--;
+            }
+            speed = 5;
+            iceHead.SetActive(true);
+            freezeTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (freezeTickTimes.Count <= 0)
+        {
+            iceHead.SetActive(false);
+            speed = 10;
         }
     }
     

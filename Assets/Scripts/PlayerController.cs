@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
         playerAnimation = GetComponent<Animator>();
         GetComponent<Rigidbody2D>().freezeRotation = true;
         fireHead.SetActive(false);
+        iceHead.SetActive(false);
         //attackArea = transform.GetChild(0).gameObject;
     }
     
@@ -222,16 +223,14 @@ public class PlayerController : MonoBehaviour
         // enemyScript.TakeDamage(attackDamage);
 
         // nao tem poção de força nem espada de fogo
-        if (!hasStrength && !hasFireSword)
+        if (!hasStrength)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
             }
         }
-
-        // tem poção de força mas nao tem espada de fogo
-        else if (hasStrength && !hasFireSword)
+        else if (hasStrength)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
@@ -240,11 +239,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // nao tem poção de força mas tem espada de fogo
-        else if (!hasStrength && hasFireSword)
+        if (hasFireSword)
         {
             foreach(Collider2D enemy in hitEnemies)
             {
-                enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+                //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
 
                 if(enemy.GetComponent<Enemy>() != null)
                 {
@@ -255,11 +254,17 @@ public class PlayerController : MonoBehaviour
         }
 
         // tem poção de força e tem espada de fogo
-        else if (hasStrength && hasFireSword)
+        if (hasIceSword)
         {
-            foreach(Collider2D enemy in hitEnemies)
+           foreach(Collider2D enemy in hitEnemies)
             {
-                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+                //enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+
+                if(enemy.GetComponent<Enemy>() != null)
+                {
+                    enemy.GetComponent<Enemy>().ApplyFreeze(6);
+                }
+
             }
         }
     }
