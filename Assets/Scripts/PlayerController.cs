@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
             canTakeDamage = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
         }
