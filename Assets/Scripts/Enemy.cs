@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     int currentHealth;
 
     private PlayerController playerController;
+    public GameObject fireHead; 
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().freezeRotation = true;
         playerController = FindObjectOfType<PlayerController>();
+        fireHead.SetActive(false);
     }
 
     void Update()
@@ -121,9 +123,14 @@ public class Enemy : MonoBehaviour
             {
                 burnTickTimes[i]--;
             }
-            TakeDamage(10);
+            TakeDamage(5);
+            fireHead.SetActive(true);
             burnTickTimes.RemoveAll(i => i == 0);
             yield return new WaitForSeconds(0.75f);
+        }
+        if (burnTickTimes.Count <= 0)
+        {
+            fireHead.SetActive(false);
         }
     }
     

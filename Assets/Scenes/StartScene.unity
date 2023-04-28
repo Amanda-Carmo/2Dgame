@@ -211,6 +211,11 @@ MonoBehaviour:
   defense: 0.25
   hasStrength: 0
   strength: 10
+  hasInvencibility: 0
+  hasFireSword: 0
+  attackSoundEffect: {fileID: 0}
+  takeHitSoundEffect: {fileID: 0}
+  jumpSoundEffect: {fileID: 0}
 --- !u!95 &133645386
 Animator:
   serializedVersion: 5

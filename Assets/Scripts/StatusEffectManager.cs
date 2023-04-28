@@ -7,10 +7,12 @@ public class StatusEffectManager : MonoBehaviour
     private Enemy enemy;
     public List<int> burnTickTimes = new List<int>();
     public int attackDamage = 5;
+    public GameObject fire; 
     // Start is called before the first frame update
     void Start()
     {
         enemy = FindObjectOfType<Enemy>();
+        fire = GameObject.Find("fireEnemy");
     }
 
     // Update is called once per frame
@@ -36,8 +38,14 @@ public class StatusEffectManager : MonoBehaviour
                 burnTickTimes[i]--;
             }
             enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+            fire.SetActive(true);
             burnTickTimes.RemoveAll(i => i == 0);
             yield return new WaitForSeconds(0.75f);
+        }
+
+        if (burnTickTimes.Count <= 0)
+        {
+            fire.SetActive(false);
         }
     }
 }

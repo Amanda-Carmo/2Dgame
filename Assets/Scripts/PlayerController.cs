@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public Transform attackPoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
-    public int attackDamage = 20;
+    public int attackDamage = 40;
 
     // variaveis de poção de defesa
     public bool hasDefense = false;
@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
 
     // variavel de fire sword
     public bool hasFireSword = false;
+    public GameObject fireHead; 
+    public GameObject fireEnemy; 
 
 
     // audio
@@ -57,8 +59,8 @@ public class PlayerController : MonoBehaviour
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
-         GetComponent<Rigidbody2D>().freezeRotation = true;
-
+        GetComponent<Rigidbody2D>().freezeRotation = true;
+        fireHead.SetActive(false);
         //attackArea = transform.GetChild(0).gameObject;
     }
     
@@ -122,9 +124,6 @@ public class PlayerController : MonoBehaviour
             };
             timer.Start();
         }
-
-        Debug.Log(hasInvencibility);
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -151,6 +150,7 @@ public class PlayerController : MonoBehaviour
 
         if (collision.tag == "fireSword") {
             hasFireSword = true;
+            fireHead.SetActive(true);
             collision.gameObject.SetActive(false);
         }
     }
@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
         {
             foreach(Collider2D enemy in hitEnemies)
             {
-                enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+                enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
 
                 if(enemy.GetComponent<Enemy>() != null)
                 {
