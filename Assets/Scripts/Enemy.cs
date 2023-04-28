@@ -108,8 +108,6 @@ public class Enemy : MonoBehaviour
 
     void Die() 
     {
-        Debug.Log("Enemy died!");
-
         enemyAnimation.SetBool("isDead", true);
 
         GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
