@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     public bool hasIceSword = false;
     public GameObject iceHead; 
     public GameObject iceEnemy; 
+    
 
 
     // audio
