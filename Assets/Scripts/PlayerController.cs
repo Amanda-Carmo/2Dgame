@@ -64,6 +64,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource jumpSoundEffect;
     //[SerializeField] private AudioSource walkSoundEffect;
 
+    public List<int> invulnerabilityTickTimes = new List<int>();
+    //public GameObject invulnerabilityEffect; 
+
     private Enemy enemy;
 
     void Start()
@@ -110,6 +113,9 @@ public class PlayerController : MonoBehaviour
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
         playerAnimation.SetBool("OnGround", isTouchingGround);
         playerAnimation.SetBool("canTakeDamage", canTakeDamage);
+        if (hasInvencibility) {
+            playerAnimation.SetBool("canTakeDamage", true);
+        }
 
         if (PlayerStats.Instance.Health <= 0 && isDead == false) 
         {
@@ -126,17 +132,51 @@ public class PlayerController : MonoBehaviour
             Attack();
         }
 
-        if (hasInvencibility)
+        // if (hasInvencibility)
+        // {
+        //     Timer timer = new Timer(5000);
+        //     timer.AutoReset = false;
+        //     timer.Elapsed += (sender, e) => {
+        //         hasInvencibility = false;
+        //         timer.Dispose();
+        //     };
+        //     timer.Start();
+        // }
+    }
+
+    public void ApplyInvulnerability(int ticks)
+    {
+        if (invulnerabilityTickTimes.Count <= 0)
         {
-            Timer timer = new Timer(5000);
-            timer.AutoReset = false;
-            timer.Elapsed += (sender, e) => {
-                hasInvencibility = false;
-                timer.Dispose();
-            };
-            timer.Start();
+            invulnerabilityTickTimes.Add(ticks);
+            StartCoroutine(Invulnerability());
+        }
+        else
+        {
+            invulnerabilityTickTimes.Add(ticks);
         }
     }
+
+    IEnumerator Invulnerability()
+    {
+        while(invulnerabilityTickTimes.Count > 0)
+        {
+            for(int i = 0; i < invulnerabilityTickTimes.Count; i++)
+            {
+                invulnerabilityTickTimes[i]--;
+            }
+            //lightningHead.SetActive(true);
+            hasInvencibility = true;
+            invulnerabilityTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (invulnerabilityTickTimes.Count <= 0)
+        {
+            hasInvencibility = false;
+            //lightningHead.SetActive(false);
+        }
+    }
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -206,6 +246,10 @@ public class PlayerController : MonoBehaviour
             PlayerStats.Instance.TakeDamage(dmg);
             lastDamageTime = Time.time;
             takeHitSoundEffect.Play();
+        }
+        else{
+            canTakeDamage = false;
+            lastDamageTime = Time.time;
         }
     }
 

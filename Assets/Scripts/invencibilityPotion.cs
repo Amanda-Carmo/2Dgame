@@ -17,7 +17,7 @@ public class invencibilityPotion : MonoBehaviour
     // Update is called once per frame
     public void Use()
     {
-        player.hasInvencibility = true;
+        player.GetComponent<PlayerController>().ApplyInvulnerability(4);
         Destroy(gameObject);
     }
 }
