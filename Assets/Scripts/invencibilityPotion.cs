@@ -6,12 +6,14 @@ public class invencibilityPotion : MonoBehaviour
 {
     //private Transform player;
     private PlayerController player;
+    [SerializeField] private AudioSource itemCollectSoundEffect;
 
     // Start is called before the first frame update
     void Start()
     {
         //player = GameObject.FindGameObjectWithTag("Player").transform;
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        itemCollectSoundEffect.Play();
     }
 
     // Update is called once per frame

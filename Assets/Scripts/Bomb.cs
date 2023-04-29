@@ -15,11 +15,13 @@ public class Bomb : MonoBehaviour
     public int attackDamage = 20;
 
     public float SplashRange = 1;
+    [SerializeField] private AudioSource itemCollectSoundEffect;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        itemCollectSoundEffect.Play();
     }
 
     // Update is called once per frame

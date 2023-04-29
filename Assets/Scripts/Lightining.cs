@@ -8,11 +8,13 @@ public class Lightining : MonoBehaviour
     public int damageLightning;
     
     private Enemy enemy;
+    [SerializeField] private AudioSource itemCollectSoundEffect;
 
     // Start is called before the first frame update
     void Start()
     {
         enemy = FindObjectOfType<Enemy>();
+        itemCollectSoundEffect.Play();
     }
 
     // Update is called once per frame

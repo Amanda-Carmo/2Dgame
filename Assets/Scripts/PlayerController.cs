@@ -73,6 +73,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource takeHitSoundEffect;
     [SerializeField] private AudioSource jumpSoundEffect;
     [SerializeField] private AudioSource walkSoundEffect;
+    [SerializeField] private AudioSource itemCollectSoundEffect;
 
     public List<int> invulnerabilityTickTimes = new List<int>();
     //public GameObject invulnerabilityEffect; 
@@ -202,31 +203,37 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "PotionSpeed") {
+            itemCollectSoundEffect.Play();
             speed = 18f;
             collision.gameObject.SetActive(false);
         }
 
         if (collision.tag == "HeartItem") {
+            itemCollectSoundEffect.Play();
             AddHealth();
             collision.gameObject.SetActive(false);
         }
 
         if (collision.tag == "PotionDefense") {
+            itemCollectSoundEffect.Play();
             hasDefense = true;
             collision.gameObject.SetActive(false);
         }
 
         if (collision.tag == "PotionStrength") {
+            itemCollectSoundEffect.Play();
             hasStrength = true;
             collision.gameObject.SetActive(false);
         }
 
         if (collision.tag == "fireSword") {
+            itemCollectSoundEffect.Play();
             hasFireSword = true;
             fireHead.SetActive(true);
             collision.gameObject.SetActive(false);
         }
         if (collision.tag == "iceSword") {
+            itemCollectSoundEffect.Play();
             hasIceSword = true;
             iceHead.SetActive(true);
             collision.gameObject.SetActive(false);
