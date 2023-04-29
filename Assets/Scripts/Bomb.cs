@@ -31,7 +31,6 @@ public class Bomb : MonoBehaviour
         Vector2 playerPos = new Vector2(player.position.x, player.position.y);
         GameObject itemObject = Instantiate(item, playerPos, Quaternion.identity);
         Animator itemAnimator = itemObject.GetComponent<Animator>();
-        //itemAnimator.Play("bomb1", 0, 0);
         Destroy(itemObject, itemAnimator.GetCurrentAnimatorStateInfo(0).length);
         StartCoroutine(ExplosionCoroutine(playerPos, itemAnimator.GetCurrentAnimatorStateInfo(0).length)); //Inicia a corrotina para a explosão
     }
@@ -39,11 +38,9 @@ public class Bomb : MonoBehaviour
     IEnumerator ExplosionCoroutine(Vector2 position, float delay)
     {
         yield return new WaitForSeconds(delay); //Espera o tempo necessário para o item ser destruído
-
         GameObject explosionObject = Instantiate(explosion, position, Quaternion.identity);
         Animator explosionAnimator = explosionObject.GetComponent<Animator>();
         Damage();
-
         Destroy(explosionObject, explosionAnimator.GetCurrentAnimatorStateInfo(0).length ); //Destrói a explosão após o fim da animação
         Destroy(gameObject);
     }
@@ -55,9 +52,7 @@ public class Bomb : MonoBehaviour
         
         foreach(Collider2D enemy in hitEnemies)
             {
-                Debug.Log("a");
                 enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
-                Debug.Log("oi");
             }
     }
 

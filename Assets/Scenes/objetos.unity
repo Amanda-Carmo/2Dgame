@@ -41637,7 +41637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &560233237
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -78238,7 +78238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &933667039
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -112467,7 +112467,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1338862685
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -113576,7 +113576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2519951107328566447, guid: 8829859d5ebb549429650973b103e2a4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8829859d5ebb549429650973b103e2a4, type: 3}

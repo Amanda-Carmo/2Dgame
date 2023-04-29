@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource attackSoundEffect;
     [SerializeField] private AudioSource takeHitSoundEffect;
     [SerializeField] private AudioSource jumpSoundEffect;
-    //[SerializeField] private AudioSource walkSoundEffect;
+    [SerializeField] private AudioSource walkSoundEffect;
 
     public List<int> invulnerabilityTickTimes = new List<int>();
     //public GameObject invulnerabilityEffect; 
@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
         rend = GetComponent<Renderer>();
         c = rend.material.color;
     }
+
     
 
     void Update()
@@ -102,14 +103,12 @@ public class PlayerController : MonoBehaviour
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
             transform.localScale = new Vector2(10.5544f, 10.5544f);
-            //walkSoundEffect.Play();
         }
 
         else if (direction < 0f)
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
             transform.localScale = new Vector2(-10.5544f, 10.5544f);
-            //walkSoundEffect.Play();
         }
 
         else
