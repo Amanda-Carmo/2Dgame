@@ -42,6 +42,16 @@ public class PlayerController : MonoBehaviour
 
     // variavel de pocao de invencibilidade
     public bool hasInvencibility = false;
+    Renderer rend;
+    Color c;
+    [Header("IFrame Stuff")]
+    public Color flashColor;
+    public Color regularColor;
+    public float flashDuration;
+    public int numberOfFlashes;
+    //public Collider2D triggerCollider;
+    public SpriteRenderer mySprite;
+
 
     // variavel de fire sword
     public bool hasFireSword = false;
@@ -69,6 +79,7 @@ public class PlayerController : MonoBehaviour
 
     private Enemy enemy;
 
+
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
@@ -77,6 +88,8 @@ public class PlayerController : MonoBehaviour
         fireHead.SetActive(false);
         iceHead.SetActive(false);
         enemy = FindObjectOfType<Enemy>();
+        rend = GetComponent<Renderer>();
+        c = rend.material.color;
     }
     
 
@@ -131,18 +144,8 @@ public class PlayerController : MonoBehaviour
         {
             Attack();
         }
-
-        // if (hasInvencibility)
-        // {
-        //     Timer timer = new Timer(5000);
-        //     timer.AutoReset = false;
-        //     timer.Elapsed += (sender, e) => {
-        //         hasInvencibility = false;
-        //         timer.Dispose();
-        //     };
-        //     timer.Start();
-        // }
     }
+
 
     public void ApplyInvulnerability(int ticks)
     {
@@ -165,16 +168,35 @@ public class PlayerController : MonoBehaviour
             {
                 invulnerabilityTickTimes[i]--;
             }
-            //lightningHead.SetActive(true);
             hasInvencibility = true;
             invulnerabilityTickTimes.RemoveAll(i => i == 0);
+            StartCoroutine(FlashCo());
+            // c.a = 0.5f;
+            // rend.material.color = c;
+
             yield return new WaitForSeconds(0.75f);
         }
         if (invulnerabilityTickTimes.Count <= 0)
         {
             hasInvencibility = false;
-            //lightningHead.SetActive(false);
+            c.a = 1f;
+            rend.material.color = c;
         }
+    }
+
+    private IEnumerator FlashCo()
+    {
+        int temp = 0;
+        //triggerCollider.enabled = false;
+        while (temp < numberOfFlashes)
+        {
+            mySprite.color = flashColor;
+            yield return new WaitForSeconds(flashDuration);
+            mySprite.color = regularColor;
+            yield return new WaitForSeconds(flashDuration);
+            temp++;
+        }
+        //triggerCollider.enabled = true;
     }
     
 
