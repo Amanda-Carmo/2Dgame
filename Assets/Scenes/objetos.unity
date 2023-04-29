@@ -41630,13 +41630,14 @@ GameObject:
   - component: {fileID: 560233239}
   - component: {fileID: 560233238}
   - component: {fileID: 560233237}
+  - component: {fileID: 560233241}
   m_Layer: 0
   m_Name: defensePotion
   m_TagString: PotionDefense
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &560233237
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -41750,6 +41751,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &560233241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560233236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08da87fb931bfcb468b9136f49daa52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &567982888
 GameObject:
   m_ObjectHideFlags: 0
@@ -42112,6 +42125,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &723139426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2519951107328566447, guid: 8829859d5ebb549429650973b103e2a4, type: 3}
+  m_PrefabInstance: {fileID: 1766843245}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &723139432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723139426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08da87fb931bfcb468b9136f49daa52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &744279654
 GameObject:
   m_ObjectHideFlags: 0
@@ -78201,13 +78231,14 @@ GameObject:
   - component: {fileID: 933667041}
   - component: {fileID: 933667040}
   - component: {fileID: 933667039}
+  - component: {fileID: 933667043}
   m_Layer: 0
   m_Name: speedPotion
   m_TagString: PotionSpeed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &933667039
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -78321,6 +78352,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &933667043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933667038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08da87fb931bfcb468b9136f49daa52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &960288955 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7093529673882664687, guid: 9add2bb31ed58964486cec62e05ffacb, type: 3}
@@ -112417,6 +112460,7 @@ GameObject:
   - component: {fileID: 1338862687}
   - component: {fileID: 1338862686}
   - component: {fileID: 1338862685}
+  - component: {fileID: 1338862689}
   m_Layer: 0
   m_Name: strengthPotion
   m_TagString: PotionStrength
@@ -112537,6 +112581,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1338862689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338862684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08da87fb931bfcb468b9136f49daa52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1363233586
 GameObject:
   m_ObjectHideFlags: 0
@@ -113274,6 +113330,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619822360}
   m_CullTransparentMesh: 1
+--- !u!1 &1650045419 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3537547978011290112, guid: 193960afa9fa24c42b6ab8ae1386126a, type: 3}
+  m_PrefabInstance: {fileID: 6690613492926104912}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1650045425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650045419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08da87fb931bfcb468b9136f49daa52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1660884749 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1139449527318771001, guid: 27228285300371b4284a02adf009edd2, type: 3}
@@ -113503,7 +113576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2519951107328566447, guid: 8829859d5ebb549429650973b103e2a4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8829859d5ebb549429650973b103e2a4, type: 3}
