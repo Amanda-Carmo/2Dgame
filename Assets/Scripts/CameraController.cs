@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour
     public float maxX;
     public float minY;
     public float maxY;
+    // deslocamento da câmera em relação ao jogador
+    public float cameraOffsetX;
 
 
     // Start is called before the first frame update
@@ -34,10 +36,25 @@ public class CameraController : MonoBehaviour
     }
 
     // Limita a posição da câmera apenas no eixo X.
-    else if (player.transform.position.x > minX && player.transform.position.x < maxX)
+
+    // Camera para de se mover em X, mas continua em Y.
+    else if (player.transform.position.x < minX)
     {
+        // continua em Y
         float clampedY = Mathf.Clamp(player.transform.position.y, minY, maxY);
-        playerPosition = new Vector3(player.transform.position.x, clampedY, transform.position.z);
+
+        // Atualiza a posição da câmera suavemente para o limite de X.
+        playerPosition = new Vector3(minX, clampedY, transform.position.z);
+        transform.position = Vector3.Lerp(transform.position, playerPosition, offsetSmoothing * Time.deltaTime);
+    }
+
+    // Camera para de se mover em X, mas continua em Y.
+    else if (player.transform.position.x > maxX){
+        // continua em Y
+        float clampedY = Mathf.Clamp(player.transform.position.y, minY, maxY);
+
+        // Atualiza a posição da câmera suavemente para o limite de X.
+        playerPosition = new Vector3(maxX, clampedY, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, playerPosition, offsetSmoothing * Time.deltaTime);
     }
     

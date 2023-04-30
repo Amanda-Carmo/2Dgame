@@ -49,17 +49,26 @@ TagManager:
   - name: Sky
     uniqueID: 2863760857
     locked: 0
+  - name: Cloud
+    uniqueID: 1240509895
+    locked: 0
   - name: BackForest
     uniqueID: 3545757829
     locked: 0
   - name: MiddleForest
     uniqueID: 2508273997
     locked: 0
+  - name: Objects
+    uniqueID: 3123549225
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Terrain
     uniqueID: 4245662647
+    locked: 0
+  - name: FalseTerrain
+    uniqueID: 748375509
     locked: 0
   - name: Grass
     uniqueID: 1480722571
