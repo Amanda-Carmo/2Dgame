@@ -119,6 +119,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
+            Debug.Log("Jump");
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
             jumpSoundEffect.Play();
         }
@@ -142,6 +143,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            Debug.Log("Attack");
             Attack();
         }
     }
@@ -293,6 +295,7 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
+        Debug.Log("Attack");
         playerAnimation.SetTrigger("attack");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         attackSoundEffect.Play();
