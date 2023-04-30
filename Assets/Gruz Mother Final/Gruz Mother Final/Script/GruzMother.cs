@@ -89,6 +89,7 @@ public class GruzMother : MonoBehaviour
         }
         enemyRB.velocity = idelMovementSpeed * idelMovementDirection;
     } 
+
    public void AttackUpNDownState()
     {
         if (isTouchingUp && goingUp)
