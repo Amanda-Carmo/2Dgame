@@ -6,11 +6,12 @@ public class explosion : MonoBehaviour
 {
     public float SplashRange = 1;
     public int attackDamage = 20;
+    [SerializeField] private AudioSource explosionSoundEffect;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        explosionSoundEffect.Play();
     }
 
     private void onCollisionEnter2D(Collision2D collision)
@@ -28,7 +29,6 @@ public class explosion : MonoBehaviour
 
                     var damagePercent = Mathf.InverseLerp(SplashRange, 0, distance);
                     enemy.TakeDamage(attackDamage);
-                    Debug.Log("oi");
                 }
 
             }

@@ -12,6 +12,11 @@ TagManager:
   - PotionStrength
   - Bomb
   - Explosion
+  - PotionInvencible
+  - fireSword
+  - iceSword
+  - Goblin
+  - lightning
   layers:
   - Default
   - TransparentFX

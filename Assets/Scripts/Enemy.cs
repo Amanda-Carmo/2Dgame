@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float speed = 0.2f;
+    public float speed;
     public Transform playerTransform;
     private float distance;
     public float attackRange = 1.5f;
     public float damage = 0.25f;
     bool isAttacking = false;
     public float attackBufferDistance = 0.25f; // distância de buffer de ataque
-
 
     public Animator enemyAnimation;
 
@@ -20,12 +19,23 @@ public class Enemy : MonoBehaviour
 
     private PlayerController playerController;
 
+    // Burn, Freeze and Lightning
+    public List<int> burnTickTimes = new List<int>();
+    public List<int> freezeTickTimes = new List<int>();
+    public List<int> lightiningTickTimes = new List<int>();
+    public GameObject fireHead; 
+    public GameObject iceHead;
+    public GameObject lightningHead; 
+
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().freezeRotation = true;
         playerController = FindObjectOfType<PlayerController>();
+        fireHead.SetActive(false);
+        iceHead.SetActive(false);
+        lightningHead.SetActive(false);
     }
 
     void Update()
@@ -53,12 +63,12 @@ public class Enemy : MonoBehaviour
             if (playerTransform.position.x > transform.position.x)
             {
                 // o playerTransform está à direita
-                transform.localScale = new Vector3(3f, 2.5f, 1f); // flip horizontal
+                transform.localScale = new Vector3(8f, 8f, 1f); // flip horizontal
             }
             else
             {
                 // o playerTransform está à esquerda
-                transform.localScale = new Vector3(-3f, 2.5f, 1f); // flip horizontal
+                transform.localScale = new Vector3(-8f, 8f, 1f); // flip horizontal
             }
         }
 
@@ -98,6 +108,102 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
+
+    public void ApplyBurn(int ticks)
+    {
+        if (burnTickTimes.Count <= 0)
+        {
+            burnTickTimes.Add(ticks);
+            StartCoroutine(Burn());
+        }
+        else
+        {
+            burnTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Burn()
+    {
+        while(burnTickTimes.Count > 0)
+        {
+            for(int i = 0; i < burnTickTimes.Count; i++)
+            {
+                burnTickTimes[i]--;
+            }
+            TakeDamage(5);
+            fireHead.SetActive(true);
+            burnTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (burnTickTimes.Count <= 0)
+        {
+            fireHead.SetActive(false);
+        }
+    }
+
+    public void ApplyFreeze(int ticks)
+    {
+        if (freezeTickTimes.Count <= 0)
+        {
+            freezeTickTimes.Add(ticks);
+            StartCoroutine(Freeze());
+        }
+        else
+        {
+            freezeTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Freeze()
+    {
+        while(freezeTickTimes.Count > 0)
+        {
+            for(int i = 0; i < freezeTickTimes.Count; i++)
+            {
+                freezeTickTimes[i]--;
+            }
+            speed = 5;
+            iceHead.SetActive(true);
+            freezeTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (freezeTickTimes.Count <= 0)
+        {
+            iceHead.SetActive(false);
+            speed = 10;
+        }
+    }
+
+    public void ApplyLightning(int ticks)
+    {
+        if (lightiningTickTimes.Count <= 0)
+        {
+            lightiningTickTimes.Add(ticks);
+            StartCoroutine(Lightining());
+        }
+        else
+        {
+            lightiningTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Lightining()
+    {
+        while(lightiningTickTimes.Count > 0)
+        {
+            for(int i = 0; i < lightiningTickTimes.Count; i++)
+            {
+                lightiningTickTimes[i]--;
+            }
+            lightningHead.SetActive(true);
+            lightiningTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (lightiningTickTimes.Count <= 0)
+        {
+            lightningHead.SetActive(false);
+        }
+    }
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -108,8 +214,6 @@ public class Enemy : MonoBehaviour
 
     void Die() 
     {
-        Debug.Log("Enemy died!");
-
         enemyAnimation.SetBool("isDead", true);
 
         GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
