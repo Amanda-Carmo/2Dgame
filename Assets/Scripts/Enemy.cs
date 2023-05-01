@@ -45,6 +45,7 @@ public class Enemy : MonoBehaviour
         // calcular a posição de movimento
         Vector2 newPosition = transform.position;
 
+        // verificar se o playerTransform está dentro do alcance de ataque
         if (distanceToPlayer <= attackRange && !isAttacking && playerController.canTakeDamage)
         {
             // parar antes da distância de buffer de ataque
