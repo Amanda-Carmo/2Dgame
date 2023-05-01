@@ -11,6 +11,8 @@ public class MenuController : MonoBehaviour
     public GameObject manualPanel;
     public GameObject[] pauseUI; // index 0: button, index 1: panel
 
+    [SerializeField] private AudioSource menuSong;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,7 @@ public class MenuController : MonoBehaviour
         Time.timeScale = 0;
         pauseUI[0].SetActive(false);
         manualPanel.SetActive(false);
+        menuSong.Play();
     }
 
     // Update is called once per frame
@@ -55,6 +58,7 @@ public class MenuController : MonoBehaviour
         startPanel.SetActive(false);
         pauseUI[0].SetActive(true);
         manualPanel.SetActive(false);
+        menuSong.Pause();
     }
 
     public void Quit()
