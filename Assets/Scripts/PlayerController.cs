@@ -81,6 +81,8 @@ public class PlayerController : MonoBehaviour
     private Enemy enemy;
     private GruzMother gruzMother;
 
+    public MenuController menuController;
+
 
     void Start()
     {
@@ -266,6 +268,7 @@ public class PlayerController : MonoBehaviour
         GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
         GetComponent<Rigidbody2D>().simulated = false; // Desativa a simulação do componente Rigidbody2D
         this.enabled = false;
+        EndGame();
     }
 
     public void Hurt(float dmg)
@@ -367,6 +370,11 @@ public class PlayerController : MonoBehaviour
         if (attackPoint == null) 
             return;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    void EndGame()
+    {
+        menuController.LoseGame();
     }
 
 }
