@@ -17,6 +17,8 @@ TagManager:
   - iceSword
   - Goblin
   - lightning
+  - GruzMother
+  - Sword
   layers:
   - Default
   - TransparentFX

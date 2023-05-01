@@ -86,13 +86,24 @@ public class GruzMother : MonoBehaviour
         
         Vector2 newPosition = transform.position;
 
-        Debug.Log("Distance to player: " + distanceToPlayer);
+        // Debug.Log("Distance to player: " + distanceToPlayer);
 
         if (distanceToPlayer <= attackRange && !isAttacking && playerController.canTakeDamage)
         {
             Debug.Log("Attack");
             // enemyAnimation.SetBool("isWalking", false);
             Attack();
+
+            if(playerController.attackSoundEffect.isPlaying)
+            {
+                Debug.Log("Playing");
+
+                // Enemy Sofre danno
+                TakeDamage(playerController.attackDamage);
+
+            }
+
+            
         }
     }
 
@@ -296,7 +307,7 @@ public class GruzMother : MonoBehaviour
         if (!hasPlayerPositon)
         {
             FlipTowardsPlayer();
-             playerPosition = player.position - transform.position;
+            playerPosition = player.position - transform.position;
             playerPosition.Normalize();
             hasPlayerPositon = true;
         }

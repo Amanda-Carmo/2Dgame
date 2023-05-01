@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
 
     // audio
-    [SerializeField] private AudioSource attackSoundEffect;
+    [SerializeField] public AudioSource attackSoundEffect;
     [SerializeField] private AudioSource takeHitSoundEffect;
     [SerializeField] private AudioSource jumpSoundEffect;
     [SerializeField] private AudioSource walkSoundEffect;
