@@ -10,6 +10,8 @@ public class MenuController : MonoBehaviour
     public GameObject startPanel;
     public GameObject manualPanel;
     public GameObject[] pauseUI; // index 0: button, index 1: panel
+    public GameObject endPanel;
+    public GameObject winPanel;
 
     [SerializeField] private AudioSource menuSong;
 
@@ -80,17 +82,15 @@ public class MenuController : MonoBehaviour
         pauseUI[1].SetActive(false);
     }
 
-    // public void LoseGame() 
-    // {
-    //     endPanel.SetActive(true);
-    //     endPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Game Over!";
-    //     //pauseUI[0].SetActive(false);
-    // }
+    public void LoseGame() 
+    {
+        endPanel.SetActive(true);
+        pauseUI[0].SetActive(false);
+    }
 
-    // public void WinGame() 
-    // {
-    //     endPanel.SetActive(true);
-    //     endPanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "You Won!";
-    //     //pauseUI[0].SetActive(false);
-    // }
+    public void WinGame() 
+    {
+        winPanel.SetActive(true);
+        pauseUI[0].SetActive(false);
+    }
 }
