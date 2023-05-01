@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
     //public GameObject invulnerabilityEffect; 
 
     private Enemy enemy;
+    private GruzMother gruzMother;
 
 
     void Start()
@@ -89,6 +90,7 @@ public class PlayerController : MonoBehaviour
         fireHead.SetActive(false);
         iceHead.SetActive(false);
         enemy = FindObjectOfType<Enemy>();
+        gruzMother = FindObjectOfType<GruzMother>();
         rend = GetComponent<Renderer>();
         c = rend.material.color;
     }
@@ -296,6 +298,7 @@ public class PlayerController : MonoBehaviour
         playerAnimation.SetTrigger("attack");
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         attackSoundEffect.Play();
+        
 
         // Enemy enemyScript = enemy.GetComponent<Enemy>();
         // enemyScript.TakeDamage(attackDamage);
@@ -306,6 +309,7 @@ public class PlayerController : MonoBehaviour
             foreach(Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+                gruzMother.GetComponent<GruzMother>().TakeDamage(attackDamage);
             }
         }
         else if (hasStrength)
@@ -313,6 +317,7 @@ public class PlayerController : MonoBehaviour
             foreach(Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Enemy>().TakeDamage(attackDamage + strength);
+                gruzMother.GetComponent<GruzMother>().TakeDamage(attackDamage + strength);
             }
         }
 
@@ -326,6 +331,11 @@ public class PlayerController : MonoBehaviour
                 if(enemy.GetComponent<Enemy>() != null)
                 {
                     enemy.GetComponent<Enemy>().ApplyBurn(4);
+                }
+
+                if(gruzMother.GetComponent<GruzMother>() != null)
+                {
+                    gruzMother.GetComponent<GruzMother>().ApplyBurn(4);
                 }
 
             }
@@ -342,6 +352,12 @@ public class PlayerController : MonoBehaviour
                 {
                     enemy.GetComponent<Enemy>().ApplyFreeze(6);
                 }
+
+                if(gruzMother.GetComponent<GruzMother>() != null)
+                {
+                    gruzMother.GetComponent<GruzMother>().ApplyFreeze(6);
+                }
+
             }
         }
     }
