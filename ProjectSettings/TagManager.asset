@@ -19,6 +19,8 @@ TagManager:
   - lightning
   - GruzMother
   - Sword
+  - Cerca
+  - Lamp
   layers:
   - Default
   - TransparentFX
