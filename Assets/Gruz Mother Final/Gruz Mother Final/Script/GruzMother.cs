@@ -5,6 +5,28 @@ using UnityEngine;
 
 public class GruzMother : MonoBehaviour
 {
+    public float speed;
+    // public Transform playerTransform;
+    private float distance;
+    public float attackRange = 3.0f;
+    public float damage = 0.50f;
+    bool isAttacking = false;
+    public float attackBufferDistance = 0.25f; // distância de buffer de ataque
+
+    // Burn, Freeze and Lightning
+    public List<int> burnTickTimes = new List<int>();
+    public List<int> freezeTickTimes = new List<int>();
+    public List<int> lightiningTickTimes = new List<int>();
+    public GameObject fireHead; 
+    public GameObject iceHead;
+    public GameObject lightningHead; 
+
+    public int maxHealth = 250;
+    int currentHealth;
+
+    private PlayerController playerController;
+
+
     [Header("Idel")]
     [SerializeField] float idelMovementSpeed;
     [SerializeField] Vector2 idelMovementDirection;
@@ -23,6 +45,7 @@ public class GruzMother : MonoBehaviour
     [SerializeField] Transform goundCheckWall;
     [SerializeField] float groundCheckRadius;
     [SerializeField] LayerMask groundLayer;
+
     private bool isTouchingUp;
     private bool isTouchingDown;
     private bool isTouchingWall;
@@ -38,6 +61,12 @@ public class GruzMother : MonoBehaviour
 
     void Start()
     {
+        playerController = FindObjectOfType<PlayerController>();
+        currentHealth = maxHealth;
+        lightningHead.SetActive(false);
+        fireHead.SetActive(false);  
+        iceHead.SetActive(false);   
+
         idelMovementDirection.Normalize();
         attackMovementDirection.Normalize();
         enemyRB = GetComponent<Rigidbody2D>();
@@ -47,9 +76,23 @@ public class GruzMother : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         isTouchingUp = Physics2D.OverlapCircle(goundCheckUp.position, groundCheckRadius, groundLayer); 
         isTouchingDown = Physics2D.OverlapCircle(goundCheckDown.position, groundCheckRadius, groundLayer); 
         isTouchingWall = Physics2D.OverlapCircle(goundCheckWall.position, groundCheckRadius, groundLayer);
+        
+        
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        
+        Vector2 newPosition = transform.position;
+
+
+        if (distanceToPlayer <= attackRange && !isAttacking && playerController.canTakeDamage)
+        {
+            Debug.Log("Attack");
+            // enemyAnimation.SetBool("isWalking", false);
+            Attack();
+        }
     }
 
     void RandomStatePicker()
@@ -75,7 +118,6 @@ public class GruzMother : MonoBehaviour
         {
             ChangeDirection();
         }
-
         if (isTouchingWall)
         {
             if (facingLeft)
@@ -89,6 +131,136 @@ public class GruzMother : MonoBehaviour
         }
         enemyRB.velocity = idelMovementSpeed * idelMovementDirection;
     } 
+
+    // _________________________________________________________________________________________________________
+    
+    // Boss atacado pelo player
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    // Espada de fogo
+    public void ApplyBurn(int ticks)
+    {
+        if (burnTickTimes.Count <= 0)
+        {
+            burnTickTimes.Add(ticks);
+            StartCoroutine(Burn());
+        }
+        else
+        {
+            burnTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Burn()
+    {
+        while(burnTickTimes.Count > 0)
+        {
+            for(int i = 0; i < burnTickTimes.Count; i++)
+            {
+                burnTickTimes[i]--;
+            }
+            TakeDamage(5);
+            fireHead.SetActive(true);
+            burnTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (burnTickTimes.Count <= 0)
+        {
+            fireHead.SetActive(false);
+        }
+    }
+
+    // Espada de gelo    
+    public void ApplyFreeze(int ticks)
+    {
+        if (freezeTickTimes.Count <= 0)
+        {
+            freezeTickTimes.Add(ticks);
+            StartCoroutine(Freeze());
+        }
+        else
+        {
+            freezeTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Freeze()
+    {
+        while(freezeTickTimes.Count > 0)
+        {
+            for(int i = 0; i < freezeTickTimes.Count; i++)
+            {
+                freezeTickTimes[i]--;
+            }
+            speed = 5;
+            iceHead.SetActive(true);
+            freezeTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (freezeTickTimes.Count <= 0)
+        {
+            iceHead.SetActive(false);
+            speed = 10;
+        }
+    }
+
+
+    public void ApplyLightning(int ticks)
+    {
+        if (lightiningTickTimes.Count <= 0)
+        {
+            lightiningTickTimes.Add(ticks);
+            StartCoroutine(Lightining());
+        }
+        else
+        {
+            lightiningTickTimes.Add(ticks);
+        }
+    }
+
+    IEnumerator Lightining()
+    {
+        while(lightiningTickTimes.Count > 0)
+        {
+            for(int i = 0; i < lightiningTickTimes.Count; i++)
+            {
+                lightiningTickTimes[i]--;
+            }
+            lightningHead.SetActive(true);
+            lightiningTickTimes.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+        if (lightiningTickTimes.Count <= 0)
+        {
+            lightningHead.SetActive(false);
+        }
+    }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Explosion") {
+            TakeDamage(25);
+        }
+    }
+
+    void Die() 
+    {
+        enemyAnim.SetBool("Die", true);
+
+        GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
+        GetComponent<Rigidbody2D>().simulated = false; // Desativa a simulação do componente Rigidbody2D
+        GetComponent<Enemy>().enabled = false;
+        this.enabled = false;
+    }
+
+    // __________________________________________________________________________________________________________
 
    public void AttackUpNDownState()
     {
@@ -125,13 +297,12 @@ public class GruzMother : MonoBehaviour
             playerPosition.Normalize();
             hasPlayerPositon = true;
         }
+
         if (hasPlayerPositon)
         {
             enemyRB.velocity = attackPlayerSpeed * playerPosition;
-           
         }
         
-
         if (isTouchingWall || isTouchingDown)
         {
             //play Slam animation
@@ -139,6 +310,25 @@ public class GruzMother : MonoBehaviour
             enemyRB.velocity = Vector2.zero;
             hasPlayerPositon = false;
         }
+    }
+
+    private void Attack()
+    {
+        isAttacking = true;
+        Debug.Log("Atacou");
+
+        // dano ataque corpo a corpo com player
+        if (Vector2.Distance(transform.position, player.position) <= attackRange && playerController.canTakeDamage && !playerController.hasDefense)
+        {
+            playerController.Hurt(playerController.damageTaken);
+        }
+        else if (Vector2.Distance(transform.position, player.position) <= attackRange && playerController.canTakeDamage && playerController.hasDefense)
+        {
+            playerController.Hurt(playerController.damageTaken - playerController.defense);
+        }
+
+        isAttacking = false;
+        
     }
 
     void FlipTowardsPlayer()
