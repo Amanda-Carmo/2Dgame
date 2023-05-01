@@ -86,6 +86,7 @@ public class GruzMother : MonoBehaviour
         
         Vector2 newPosition = transform.position;
 
+        Debug.Log("Distance to player: " + distanceToPlayer);
 
         if (distanceToPlayer <= attackRange && !isAttacking && playerController.canTakeDamage)
         {
@@ -264,10 +265,12 @@ public class GruzMother : MonoBehaviour
 
    public void AttackUpNDownState()
     {
+
         if (isTouchingUp && goingUp)
         {
             ChangeDirection();
         }
+
         else if (isTouchingDown && !goingUp)
         {
             ChangeDirection();

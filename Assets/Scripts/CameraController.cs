@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static CameraController instance;
+
     public GameObject player;
     public float offset;
     public float offsetSmoothing;
@@ -19,6 +21,16 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(instance != null)
+        {
+            Debug.LogWarning("More than one instance of CameraController found!");
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(gameObject);
         
     }
 
