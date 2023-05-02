@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
         if(instance != null)
         {
             Debug.LogWarning("More than one instance of CameraController found!");
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
         else
         {
