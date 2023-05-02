@@ -24,6 +24,7 @@ public class Lightining : MonoBehaviour
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Goblin");
         GameObject[] bosses = GameObject.FindGameObjectsWithTag("GruzMother");
+        GameObject[] flyingEyes = GameObject.FindGameObjectsWithTag("FlyingEye");
 
         foreach(GameObject enemy in enemies)
         {
@@ -35,6 +36,12 @@ public class Lightining : MonoBehaviour
         {
             boss.GetComponent<GruzMother>().TakeDamage(damageLightning);
             boss.GetComponent<GruzMother>().ApplyLightning(1);
+        }
+
+        foreach(GameObject flyingEye in flyingEyes)
+        {
+            flyingEye.GetComponent<Enemy>().TakeDamage(damageLightning);
+            flyingEye.GetComponent<Enemy>().ApplyLightning(1);
         }
         
         Destroy(gameObject);

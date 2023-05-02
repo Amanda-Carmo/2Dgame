@@ -21,6 +21,7 @@ TagManager:
   - Sword
   - Cerca
   - Lamp
+  - FlyingEye
   layers:
   - Default
   - TransparentFX
