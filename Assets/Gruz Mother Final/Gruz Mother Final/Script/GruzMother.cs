@@ -153,8 +153,14 @@ public class GruzMother : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            Debug.Log("...E morreu");
             Die();
-            EndGame();
+            
+        }
+        else
+        {
+            Debug.Log("Vida atual: " + currentHealth);
+            enemyAnim.SetTrigger("NotDead");
         }
     }
 
@@ -266,12 +272,12 @@ public class GruzMother : MonoBehaviour
 
     void Die() 
     {
-        enemyAnim.SetBool("Dead", true);
+        Debug.Log("Morreu");
+        enemyAnim.SetTrigger("Dead");
 
-        GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
-        GetComponent<Rigidbody2D>().simulated = false; // Desativa a simulação do componente Rigidbody2D
-        GetComponent<Enemy>().enabled = false;
-        this.enabled = false;
+        EndGame();
+
+
     }
 
     // __________________________________________________________________________________________________________
