@@ -40,12 +40,12 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
         // calcular a posição de movimento
         Vector2 newPosition = transform.position;
 
-        // verificar se o playerTransform está dentro do alcance de ataque
         if (distanceToPlayer <= attackRange && !isAttacking && playerController.canTakeDamage)
         {
             // parar antes da distância de buffer de ataque
@@ -61,15 +61,41 @@ public class Enemy : MonoBehaviour
             enemyAnimation.SetBool("isWalking", true);
 
             // verificar a posição do playerTransform em relação ao Enemy
-            if (playerTransform.position.x > transform.position.x)
+            if (gameObject.CompareTag("Goblin"))
             {
-                // o playerTransform está à direita
-                transform.localScale = new Vector3(8f, 8f, 1f); // flip horizontal
+                if (playerTransform.position.x > transform.position.x)
+                {
+                    // o playerTransform está à direita
+                    transform.localScale = new Vector3(8f, 8f, 1f); // flip horizontal
+
+                }
+                else
+                {
+                    transform.localScale = new Vector3(-8f, 8f, 1f); // flip horizontal
+
+                }
             }
-            else
+            if (gameObject.CompareTag("FlyingEye"))
             {
-                // o playerTransform está à esquerda
-                transform.localScale = new Vector3(-8f, 8f, 1f); // flip horizontal
+                if (playerTransform.position.x > transform.position.x)
+                {
+                    // o playerTransform está à direita
+                    transform.localScale = new Vector3(24.5f, 23.5f, 1f); // flip horizontal
+                }
+                else
+                {
+                    transform.localScale = new Vector3(-24.5f, 23.5f, 1f); // flip horizontal
+
+                }
+                if (Mathf.Abs(transform.position.y - playerTransform.position.y) > 1.0f) // se a diferença de altura for maior que 1.5f
+                {
+                    newPosition = new Vector2(transform.position.x, playerTransform.position.y);
+                }
+                else
+                {
+                    newPosition = Vector2.MoveTowards(transform.position, playerTransform.position, speed * Time.deltaTime);
+                    enemyAnimation.SetBool("isWalking", true);
+                }
             }
         }
 
