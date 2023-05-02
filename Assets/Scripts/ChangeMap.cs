@@ -23,11 +23,11 @@ public class ChangeMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Pegar posição do player
         this.player = GameObject.FindWithTag("Player").transform;
 
-        // Checar qual a tag do colisor
-        // Pegar tag do objeto atual
 
+        // Checar se  a tag do objeto é "Cerca" e sortear a posição de entrada do mapa
         if(gameObject.tag == "Cerca")
         {                    
             // Sortear entre 0 e 1 para escolher a posição de entrada do mapa
@@ -50,9 +50,15 @@ public class ChangeMap : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision){
+
+        // Checar se o player está colidindo com a Cerca
+        if(collision.gameObject.CompareTag("Player")){
+            // Mudar posição do player para a posição de entrada do outro mapa
+            this.player.position = position;
+        }
         
-        // Mudar posição do player para a posição de entrada do outro mapa
-        this.player.position = position;
+        // // Mudar posição do player para a posição de entrada do outro mapa
+        // this.player.position = position;
     }
 }
  
