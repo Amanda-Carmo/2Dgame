@@ -58,6 +58,8 @@ public class GruzMother : MonoBehaviour
     private Rigidbody2D enemyRB;
     private Animator enemyAnim;
 
+    public MenuController menuController;
+
 
     void Start()
     {
@@ -152,6 +154,7 @@ public class GruzMother : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+            EndGame();
         }
     }
 
@@ -378,5 +381,10 @@ public class GruzMother : MonoBehaviour
         Gizmos.DrawWireSphere(goundCheckUp.position, groundCheckRadius);
         Gizmos.DrawWireSphere(goundCheckDown.position, groundCheckRadius);
         Gizmos.DrawWireSphere(goundCheckWall.position, groundCheckRadius);
+    }
+
+    void EndGame()
+    {
+        menuController.WinGame();
     }
 }
