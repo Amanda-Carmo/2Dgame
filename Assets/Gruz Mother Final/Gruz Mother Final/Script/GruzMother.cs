@@ -92,7 +92,16 @@ public class GruzMother : MonoBehaviour
         {
             Debug.Log("Attack");
             // enemyAnimation.SetBool("isWalking", false);
-            Attack();            
+            Attack();      
+            if(playerController.attackSoundEffect.isPlaying)
+            {
+                Debug.Log("Playing");
+
+                // Enemy Sofre danno
+                TakeDamage(playerController.attackDamage);
+
+            }
+      
         }
     }
 
