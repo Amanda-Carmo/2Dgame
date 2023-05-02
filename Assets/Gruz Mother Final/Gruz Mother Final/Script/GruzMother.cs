@@ -92,18 +92,7 @@ public class GruzMother : MonoBehaviour
         {
             Debug.Log("Attack");
             // enemyAnimation.SetBool("isWalking", false);
-            Attack();
-
-            if(playerController.attackSoundEffect.isPlaying)
-            {
-                Debug.Log("Playing");
-
-                // Enemy Sofre danno
-                TakeDamage(playerController.attackDamage);
-
-            }
-
-            
+            Attack();            
         }
     }
 
@@ -149,6 +138,7 @@ public class GruzMother : MonoBehaviour
     // Boss atacado pelo player
     public void TakeDamage(int damage)
     {
+        enemyAnim.SetTrigger("EnemyHurt");
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -264,7 +254,7 @@ public class GruzMother : MonoBehaviour
 
     void Die() 
     {
-        enemyAnim.SetBool("Die", true);
+        enemyAnim.SetBool("Dead", true);
 
         GetComponent<Collider2D>().enabled = false; // Desativa o componente Collider2D
         GetComponent<Rigidbody2D>().simulated = false; // Desativa a simulação do componente Rigidbody2D
@@ -329,7 +319,6 @@ public class GruzMother : MonoBehaviour
     private void Attack()
     {
         isAttacking = true;
-        Debug.Log("Atacou");
 
         // dano ataque corpo a corpo com player
         if (Vector2.Distance(transform.position, player.position) <= attackRange && playerController.canTakeDamage && !playerController.hasDefense)
